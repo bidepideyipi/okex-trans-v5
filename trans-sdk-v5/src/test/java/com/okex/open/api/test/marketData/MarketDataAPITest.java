@@ -1,10 +1,6 @@
 package com.okex.open.api.test.marketData;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
-import com.okex.open.api.bean.market.result.BinanceCandlestick;
-import com.okex.open.api.enums.BinanceInternal;
 import com.okex.open.api.service.marketData.MarketDataAPIService;
 import com.okex.open.api.service.marketData.impl.MarketDataAPIServiceImpl;
 import org.junit.Before;
@@ -12,8 +8,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-
+/**
+ * 市场数据接口测试
+ * @author Anthony
+ * @date 2023/12/12 已验证
+ */
 public class MarketDataAPITest extends MarketDataAPIBaseTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(MarketDataAPITest.class);
