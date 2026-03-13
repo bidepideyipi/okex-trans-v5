@@ -18,6 +18,7 @@
 
     <modules>
         <module>trans-sdk-v5</module>
+        <module>trans-trader</module>
     </modules>
 
     <dependencies>
