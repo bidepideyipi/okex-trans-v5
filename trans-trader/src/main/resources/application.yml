@@ -8,6 +8,13 @@ spring:
     port: 6379
     database: 1
 
+  # MongoDB 配置
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: technical_analysis
+
   # 定时任务配置
   task:
     scheduling:
@@ -16,11 +23,3 @@ spring:
 
 server:
   port: 8080
-
-# OKEx API 配置
-okex:
-  api:
-    key: your-api-key
-    secret: your-api-secret
-    passphrase: your-api-passphrase
-    base-url: https://www.okex.com
