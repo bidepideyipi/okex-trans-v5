@@ -1,4 +1,10 @@
 package com.supermancell.okex.trans.trader.config;
 
-public class Constans {
+import com.supermancell.okex.trans.trader.enums.Prediction;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Constance {
+
 }

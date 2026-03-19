@@ -2,15 +2,20 @@ spring:
   application:
     name: trans-trader
 
-server:
-  port: 8080
+  # Redis 配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
 
-# 定时任务配置
-spring:
+  # 定时任务配置
   task:
     scheduling:
       pool:
         size: 10
+
+server:
+  port: 8080
 
 # OKEx API 配置
 okex:
