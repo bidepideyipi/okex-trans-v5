@@ -6,22 +6,22 @@ public class ApiResp<T> {
     private String msg;
     private T data;
 
-    public static ApiResp success(){
-        ApiResp apiResp = new ApiResp();
+    public static <T> ApiResp<T> success(){
+        ApiResp<T> apiResp = new ApiResp<>();
         apiResp.setCode("200");
         apiResp.setMsg("success");
         return apiResp;
     }
 
-    public static ApiResp loginFail(){
-        ApiResp apiResp = new ApiResp();
+    public static <T> ApiResp<T> loginFail(){
+        ApiResp<T> apiResp = new ApiResp<>();
         apiResp.setCode("406");
         apiResp.setMsg("登陆失败，密码或用户名错误！");
         return apiResp;
     }
 
-    public ApiResp success(T data){
-        ApiResp apiResp = new ApiResp();
+    public static <T> ApiResp<T> success(T data){
+        ApiResp<T> apiResp = new ApiResp<>();
         apiResp.setCode("200");
         apiResp.setMsg("success");
         apiResp.setData(data);

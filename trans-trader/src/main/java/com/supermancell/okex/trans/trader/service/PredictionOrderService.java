@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -41,50 +40,50 @@ public class PredictionOrderService {
     
     public DocPredictionOrder saveOrUpdate(DocPredictionOrder order) {
         Optional<DocPredictionOrder> existing = predictionOrderRepository
-            .findByPredictionKeyAndInstId(order.getPredictionKey(), order.getInstId());
+            .findBySignalIdAndInstId(order.getSignalId(), order.getInstId());
         
         if (existing.isPresent()) {
             DocPredictionOrder existingOrder = existing.get();
             updateOrder(existingOrder, order);
             DocPredictionOrder saved = predictionOrderRepository.save(existingOrder);
             log.info("Updated prediction order: predictionKey={}, instId={}", 
-                saved.getPredictionKey(), saved.getInstId());
+                saved.getSignalId(), saved.getInstId());
             return saved;
         } else {
             DocPredictionOrder saved = predictionOrderRepository.save(order);
             log.info("Created new prediction order: predictionKey={}, instId={}", 
-                saved.getPredictionKey(), saved.getInstId());
+                saved.getSignalId(), saved.getInstId());
             return saved;
         }
     }
     
     private void updateOrder(DocPredictionOrder existing, DocPredictionOrder newOrder) {
-        if (newOrder.getProbability() != null) {
-            existing.setProbability(newOrder.getProbability());
-        }
-        if (newOrder.getPredictionTs() != null) {
-            existing.setPredictionTs(newOrder.getPredictionTs());
-        }
-        if (newOrder.getSz() != null) {
-            existing.setSz(newOrder.getSz());
-        }
-        if (newOrder.getCreateTs() != null) {
-            existing.setCreateTs(newOrder.getCreateTs());
-        }
-        if (newOrder.getCreatePrice() != null) {
-            existing.setCreatePrice(newOrder.getCreatePrice());
-        }
-        if (newOrder.getOrderId() != null) {
-            existing.setOrderId(newOrder.getOrderId());
-        }
-        if (newOrder.getOrderStatus() != null) {
-            existing.setOrderStatus(newOrder.getOrderStatus());
-        }
+//        if (newOrder.getProbability() != null) {
+//            existing.setProbability(newOrder.getProbability());
+//        }
+//        if (newOrder.getPredictionTs() != null) {
+//            existing.setPredictionTs(newOrder.getPredictionTs());
+//        }
+//        if (newOrder.getSz() != null) {
+//            existing.setSz(newOrder.getSz());
+//        }
+//        if (newOrder.getCreateTs() != null) {
+//            existing.setCreateTs(newOrder.getCreateTs());
+//        }
+//        if (newOrder.getCreatePrice() != null) {
+//            existing.setCreatePrice(newOrder.getCreatePrice());
+//        }
+//        if (newOrder.getOrderId() != null) {
+//            existing.setOrderId(newOrder.getOrderId());
+//        }
+//        if (newOrder.getOrderStatus() != null) {
+//            existing.setOrderStatus(newOrder.getOrderStatus());
+//        }
     }
     
     public Optional<DocPredictionOrder> findByPredictionKeyAndInstId(String predictionKey, String instId) {
         Optional<DocPredictionOrder> order = predictionOrderRepository
-            .findByPredictionKeyAndInstId(predictionKey, instId);
+            .findBySignalIdAndInstId(predictionKey, instId);
         if (order.isPresent()) {
             log.info("Found prediction order: predictionKey={}, instId={}", predictionKey, instId);
         } else {
@@ -93,9 +92,9 @@ public class PredictionOrderService {
         return order;
     }
     
-    public List<DocPredictionOrder> findByPredictionKey(String predictionKey) {
-        List<DocPredictionOrder> orders = predictionOrderRepository.findByPredictionKey(predictionKey);
-        log.info("Found {} prediction orders for predictionKey={}", orders.size(), predictionKey);
+    public List<DocPredictionOrder> findBySignalId(String signalId) {
+        List<DocPredictionOrder> orders = predictionOrderRepository.findBySignalId(signalId);
+        log.info("Found {} prediction orders for signalId={}", orders.size(), signalId);
         return orders;
     }
     
@@ -122,12 +121,12 @@ public class PredictionOrderService {
         log.info("Deleted prediction order with id={}", id);
     }
     
-    public void deleteByPredictionKeyAndInstId(String predictionKey, String instId) {
+    public void deleteByPredictionKeyAndInstId(String signalId, String instId) {
         Optional<DocPredictionOrder> order = predictionOrderRepository
-            .findByPredictionKeyAndInstId(predictionKey, instId);
+            .findBySignalIdAndInstId(signalId, instId);
         order.ifPresent(o -> {
             predictionOrderRepository.delete(o);
-            log.info("Deleted prediction order: predictionKey={}, instId={}", predictionKey, instId);
+            log.info("Deleted prediction order: signalId={}, instId={}", signalId, instId);
         });
     }
 }

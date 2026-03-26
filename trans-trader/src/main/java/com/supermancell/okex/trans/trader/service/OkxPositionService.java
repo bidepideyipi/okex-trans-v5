@@ -8,7 +8,6 @@ import com.okex.open.api.config.APIConfiguration;
 import com.okex.open.api.enums.I18nEnum;
 import com.okex.open.api.enums.InstType;
 import com.okex.open.api.service.account.AccountAPIService;
-import com.okex.open.api.service.account.impl.AccountAPI;
 import com.okex.open.api.service.account.impl.AccountAPIServiceImpl;
 import com.supermancell.okex.trans.trader.model.DocConfig;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import java.util.Optional;
 public class OkxPositionService {
 
     private final ConfigService configService;
-    private AccountAPIService accountAPIService;
+    private final AccountAPIService accountAPIService;
 
     public OkxPositionService(ConfigService configService) {
         this.configService = configService;

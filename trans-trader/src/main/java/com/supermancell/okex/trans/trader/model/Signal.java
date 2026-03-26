@@ -12,16 +12,15 @@ public class Signal  implements Serializable {
     private String instId;
     private String bar;
     private String prediction;
+    private String label;
     private Map<String, BigDecimal> probability;
-    private BigDecimal predictionLabelLeft;
-    private BigDecimal predictionLabelRight;
     private String predictionHigh;
+    private String labelHigh;
     private Map<String, BigDecimal> probabilityHigh;
-    private BigDecimal predictionHighLabelLeft;
-    private BigDecimal predictionHighLabelRight;
     private String predictionLow;
+    private String labelLow;
     private Map<String, BigDecimal> probabilityLow;
-    private BigDecimal predictionLowLabelLeft;
-    private BigDecimal predictionLowLabelRight;
-
+    private BigDecimal price;
+    private BigDecimal line1;
+    private BigDecimal line2;
 }

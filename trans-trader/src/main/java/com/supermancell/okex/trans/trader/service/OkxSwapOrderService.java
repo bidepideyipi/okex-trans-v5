@@ -17,12 +17,12 @@ import java.util.Optional;
 import  com.okex.open.api.bean.resp.OkxApiResp;
 
 @Service
-public class OkxOrderService {
+public class OkxSwapOrderService {
 
     private final ConfigService configService;
     private TradeAPIService tradeAPIService;
 
-    public OkxOrderService(ConfigService configService) {
+    public OkxSwapOrderService(ConfigService configService) {
         this.configService = configService;
 
         Optional<DocConfig>  configApiKey = configService.getConfig("okexAccount", "api_key");

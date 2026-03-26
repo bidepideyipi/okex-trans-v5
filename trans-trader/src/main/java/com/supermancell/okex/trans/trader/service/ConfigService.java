@@ -20,9 +20,7 @@ public class ConfigService {
     
     public Optional<DocConfig> getConfig(String item, String key) {
         Optional<DocConfig> config = docConfigRepository.findByItemAndKey(item, key);
-        if (config.isPresent()) {
-            log.info("Retrieved config: item={}, key={}, value={}", item, key, config.get().getValue());
-        } else {
+        if (!config.isPresent()) {
             log.warn("Config not found: item={}, key={}", item, key);
         }
         return config;

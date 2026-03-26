@@ -2,9 +2,11 @@ package com.supermancell.okex.trans.trader.redis;
 
 import com.supermancell.okex.trans.trader.enums.Prediction;
 import com.supermancell.okex.trans.trader.model.Signal;
+import com.supermancell.okex.trans.trader.service.OkxGridTransService;
+import com.supermancell.okex.trans.trader.service.OkxTransService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.stream.Consumer;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.ReadOffset;
@@ -32,11 +34,17 @@ public class RedisStreamConsumer {
 
     private volatile long lastProcessedId = 0L;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private final StringRedisTemplate redisTemplate;
+
+    private final OkxGridTransService okxTransService;
 
     private ExecutorService executorService;
     private Thread consumerThread;
+
+    public RedisStreamConsumer(StringRedisTemplate redisTemplate, OkxGridTransService okxTransService) {
+        this.redisTemplate = redisTemplate;
+        this.okxTransService = okxTransService;
+    }
 
     @PostConstruct
     public void init() {
@@ -142,12 +150,15 @@ public class RedisStreamConsumer {
                     }
                 }
 
-               if(signalType.equals("3")){
-                   redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
-                   return;
-               }
+//               if(signalType.equals("3")){
+//                   redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
+//                   return;
+//               }
+            }
 
-               //TODO 交易触发
+            //TODO 交易触发
+            boolean success = okxTransService.acceptSign(signalType, signalProbability, signal);
+            if(success){
                 redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
             }
 

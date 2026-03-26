@@ -10,13 +10,13 @@ import java.util.Optional;
 @Repository
 public interface DocPredictionOrderRepository extends MongoRepository<DocPredictionOrder, String> {
     
-    Optional<DocPredictionOrder> findByPredictionKeyAndInstId(String predictionKey, String instId);
+    Optional<DocPredictionOrder> findBySignalIdAndInstId(String signalId, String instId);
     
-    List<DocPredictionOrder> findByPredictionKey(String predictionKey);
+    List<DocPredictionOrder> findBySignalId(String signalId);
     
     List<DocPredictionOrder> findByInstId(String instId);
     
     List<DocPredictionOrder> findByOrderStatus(String orderStatus);
     
-    List<DocPredictionOrder> findByPredictionKeyAndOrderStatus(String predictionKey, String orderStatus);
+    List<DocPredictionOrder> findBySignalIdAndOrderStatus(String signalId, String orderStatus);
 }
