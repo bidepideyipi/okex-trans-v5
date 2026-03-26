@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Data
 public class Signal  implements Serializable {
+    private String messageId;
     private long timestamp;
     private String instId;
     private String bar;

@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "prediction_order")
-@CompoundIndex(name = "idx_signalId_instId", def = "{'signalId': 1, 'instId': 1}", unique = true)
 public class DocPredictionOrder {
     @Id
     private String id;
-    private String signalId;//预测信号id
     private String instId;
     private String orderStatus;//运行状态
     private String algoId;//网格策略ID

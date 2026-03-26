@@ -18,6 +18,8 @@ public class OrderAlgo {
     private String direction;
     private String lever;
     private String basePos;
+    private String tpRatio;
+    private String slRatio;
 
     public String getInstId() {
         return instId;
@@ -137,5 +139,21 @@ public class OrderAlgo {
 
     public void setBasePos(String basePos) {
         this.basePos = basePos;
+    }
+
+    public String getTpRatio() {
+        return tpRatio;
+    }
+
+    public void setTpRatio(String tpRatio) {
+        this.tpRatio = tpRatio;
+    }
+
+    public String getSlRatio() {
+        return slRatio;
+    }
+
+    public void setSlRatio(String slRatio) {
+        this.slRatio = slRatio;
     }
 }

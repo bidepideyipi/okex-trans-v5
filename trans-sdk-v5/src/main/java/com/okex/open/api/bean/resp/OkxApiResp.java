@@ -34,6 +34,14 @@ public class OkxApiResp {
         return JSON.parseArray(data.toJSONString(), OrderView.class);
     }
 
+    public List<GridOrderView> gridOrders(){
+        if(!OkexConstant.CODE_SUCCESS.equals(code)){
+            return new ArrayList<>();
+        }
+
+        return JSON.parseArray(data.toJSONString(), GridOrderView.class);
+    }
+
     public TickerView tickerView(){
         if(!OkexConstant.CODE_SUCCESS.equals(code) || data.isEmpty()){
             return null;

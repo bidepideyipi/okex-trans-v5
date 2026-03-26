@@ -124,7 +124,7 @@ public class RedisStreamConsumer {
 
             // 这里可以添加具体的业务逻辑处理
             // 例如：解析消息内容，调用交易API等
-            Signal signal = Converter.mapToSignal(message);
+            Signal signal = Converter.mapToSignal(message, messageId);
             // 确认消息处理完成（可选，根据业务需求）
             // redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
             String signalType = signal.getPrediction();
