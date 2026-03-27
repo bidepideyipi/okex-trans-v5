@@ -127,37 +127,37 @@ public class RedisStreamConsumer {
             Signal signal = Converter.mapToSignal(message, messageId);
             // 确认消息处理完成（可选，根据业务需求）
             // redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
-            String signalType = signal.getPrediction();
-            BigDecimal signalProbability = signal.getProbability().get(signalType);
+//            String signalType = signal.getPrediction();
+//            BigDecimal signalProbability = signal.getProbability().get(signalType);
 
-            if(signal.getPrediction().equals(Prediction.MOVING_SIDEWAYS.getCode())){
-                //当Prediction为横盘时，要多看一眼。看PredictionHigh和PredictionLow是否为横盘
-                if(!signal.getPredictionHigh().equals(Prediction.HIGH_MOVING_SIDEWAYS.getCode()) ){
-                    String highSignalType = signal.getPredictionHigh();
-                    BigDecimal highSignalProbability = signal.getProbabilityHigh().get(highSignalType);
-                    if(highSignalProbability.compareTo(signalProbability) > 0){
-                        signalType = (Integer.parseInt(highSignalType) +2) +"";
-                        signalProbability = highSignalProbability;
-                    }
-                }
-
-                if(!signal.getPredictionLow().equals(Prediction.LOW_MOVING_SIDEWAYS.getCode())){
-                    String lowSignalType = signal.getPredictionLow();
-                    BigDecimal lowSignalProbability = signal.getProbabilityLow().get(lowSignalType);
-                    if(lowSignalProbability.compareTo(signalProbability) > 0){
-                        signalType = lowSignalType;
-                        signalProbability = lowSignalProbability;
-                    }
-                }
+//            if(signal.getPrediction().equals(Prediction.MOVING_SIDEWAYS.getCode())){
+//                //当Prediction为横盘时，要多看一眼。看PredictionHigh和PredictionLow是否为横盘
+//                if(!signal.getPredictionHigh().equals(Prediction.HIGH_MOVING_SIDEWAYS.getCode()) ){
+//                    String highSignalType = signal.getPredictionHigh();
+//                    BigDecimal highSignalProbability = signal.getProbabilityHigh().get(highSignalType);
+//                    if(highSignalProbability.compareTo(signalProbability) > 0){
+//                        signalType = (Integer.parseInt(highSignalType) +2) +"";
+//                        signalProbability = highSignalProbability;
+//                    }
+//                }
+//
+//                if(!signal.getPredictionLow().equals(Prediction.LOW_MOVING_SIDEWAYS.getCode())){
+//                    String lowSignalType = signal.getPredictionLow();
+//                    BigDecimal lowSignalProbability = signal.getProbabilityLow().get(lowSignalType);
+//                    if(lowSignalProbability.compareTo(signalProbability) > 0){
+//                        signalType = lowSignalType;
+//                        signalProbability = lowSignalProbability;
+//                    }
+//                }
 
 //               if(signalType.equals("3")){
 //                   redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
 //                   return;
 //               }
-            }
+//            }
 
             //TODO 交易触发
-            boolean success = okxTransService.acceptSign(signalType, signalProbability, signal);
+            boolean success = okxTransService.acceptSign(signal);
             if(success){
                 redisTemplate.opsForStream().acknowledge(GROUP_NAME, record);
             }

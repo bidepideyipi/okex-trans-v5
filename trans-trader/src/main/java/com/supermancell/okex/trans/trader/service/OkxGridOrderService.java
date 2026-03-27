@@ -2,9 +2,11 @@ package com.supermancell.okex.trans.trader.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.okex.open.api.bean.gridTrading.param.AmendOrderAlgo;
 import com.okex.open.api.bean.gridTrading.param.OrderAlgo;
 import com.okex.open.api.bean.gridTrading.param.StopOrderAlgo;
 import com.okex.open.api.bean.resp.OkxApiResp;
+import com.okex.open.api.bean.trade.param.AmendOrder;
 import com.okex.open.api.bean.view.GridOrderView;
 import com.okex.open.api.bean.view.OrderView;
 import com.okex.open.api.bean.view.TickerView;
@@ -125,6 +127,13 @@ public class OkxGridOrderService {
         }
     }
 
+    /**
+     *  官方接口有问题
+     * @param algId
+     * @param instId
+     * @return
+     */
+    @Deprecated
     public JSONObject closeOrder(String algId, String instId) {
         StopOrderAlgo orderAlgo = new StopOrderAlgo();
         orderAlgo.setAlgoId(algId);
@@ -132,6 +141,27 @@ public class OkxGridOrderService {
         orderAlgo.setAlgoOrdType(AlgOrdTypeEnum.CONTRACT_GRID.v());
         orderAlgo.setStopType("1");
         JSONObject result = this.tradeAPIService.stopOrderAlgo(orderAlgo);
+        return result;
+    }
+
+    /**
+     *   修改网格订单, 实测可以通过缩小止盈止损来实现关闭订单
+     * @param algId
+     * @param instId
+     * @param slTriggerPx
+     * @param tpTriggerPx
+     * @return
+     */
+    public JSONObject amdOrder(String algId, String instId, String slTriggerPx, String tpTriggerPx){
+        AmendOrderAlgo orderAlgo = new AmendOrderAlgo();
+        orderAlgo.setAlgoId(algId);
+        orderAlgo.setInstId(instId);
+        orderAlgo.setTriggerAction("stop");
+        orderAlgo.setStopType("2");
+        orderAlgo.setTriggerStrategy("instant");
+        orderAlgo.setSlTriggerPx(slTriggerPx);
+        orderAlgo.setTpTriggerPx(tpTriggerPx);
+        JSONObject result = this.tradeAPIService.amendOrderAlgo(orderAlgo);
         return result;
     }
 }

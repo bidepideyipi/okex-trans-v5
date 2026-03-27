@@ -6,6 +6,7 @@ import com.okex.open.api.bean.gridTrading.param.AmendOrderAlgo;
 import com.okex.open.api.bean.gridTrading.param.OrderAlgo;
 import com.okex.open.api.bean.gridTrading.param.StopOrderAlgo;
 import com.okex.open.api.bean.gridTrading.param.WithdrawIncome;
+import com.okex.open.api.enums.AlgOrdTypeEnum;
 import com.okex.open.api.service.gridTrading.GridTradingAPIService;
 import com.okex.open.api.service.gridTrading.impl.GridTradingAPIServiceImpl;
 import org.junit.Before;
@@ -33,25 +34,25 @@ public class GridTradingAPITests extends GridTradingAPIBaseTests {
     @Test
     public void orderAlgo(){
         OrderAlgo orderAlgo = new OrderAlgo();
-        orderAlgo.setInstId("");
-        orderAlgo.setAlgoOrdType("");
-        orderAlgo.setMaxPx("");
-        orderAlgo.setMinPx("");
-        orderAlgo.setGridNum("");
-        orderAlgo.setRunType("");
-        orderAlgo.setTpTriggerPx("");
-        orderAlgo.setSlTriggerPx("");
-        orderAlgo.setTag("");
+        orderAlgo.setInstId("ETH-USDT-SWAP");
+        orderAlgo.setAlgoOrdType("contract_grid");
+        orderAlgo.setMaxPx("2600");
+        orderAlgo.setMinPx("1800");
+        orderAlgo.setGridNum("100");
+        orderAlgo.setRunType("2");
+        // orderAlgo.setTpTriggerPx("1800");
+        // orderAlgo.setSlTriggerPx("2600");
+        //orderAlgo.setTag("");
 
         //现货网格
-        orderAlgo.setQuoteSz("");
-        orderAlgo.setBaseSz("");
+        // orderAlgo.setQuoteSz("");
+        // orderAlgo.setBaseSz("");
 
         //合约网格
-        orderAlgo.setSz("");
-        orderAlgo.setDirection("");
-        orderAlgo.setLever("");
-        orderAlgo.setBasePos("");
+        orderAlgo.setSz("200");
+        orderAlgo.setDirection("long");
+        orderAlgo.setLever("10");
+        //orderAlgo.setBasePos("");
 
         JSONObject result = this.gridTradingAPIService.orderAlgo(orderAlgo);
         toResultString(LOG, "result", result);
@@ -64,10 +65,15 @@ public class GridTradingAPITests extends GridTradingAPIBaseTests {
     @Test
     public void amendOrderAlgo(){
         AmendOrderAlgo amendOrderAlgo = new AmendOrderAlgo();
-        amendOrderAlgo.setAlgoId("");
-        amendOrderAlgo.setInstId("");
-        amendOrderAlgo.setSlTriggerPx("");
-        amendOrderAlgo.setTpTriggerPx("");
+        amendOrderAlgo.setAlgoId("3425157900786900992");
+        amendOrderAlgo.setInstId("ETH-USDT-SWAP");
+        // amendOrderAlgo.setSlTriggerPx("3000");
+        // amendOrderAlgo.setTpTriggerPx("2070");
+        amendOrderAlgo.setTriggerAction("stop");
+        amendOrderAlgo.setStopType("2");
+        amendOrderAlgo.setTriggerStrategy("instant");
+        amendOrderAlgo.setSlTriggerPx("2063");
+        amendOrderAlgo.setTpTriggerPx("2064");
 
         JSONObject result = this.gridTradingAPIService.amendOrderAlgo(amendOrderAlgo);
         toResultString(LOG, "result", result);
@@ -81,10 +87,10 @@ public class GridTradingAPITests extends GridTradingAPIBaseTests {
     @Test
     public void stopOrderAlgo(){
         StopOrderAlgo stopOrderAlgo = new StopOrderAlgo();
-        stopOrderAlgo.setAlgoId("");
-        stopOrderAlgo.setInstId("");
-        stopOrderAlgo.setAlgoOrdType("");
-        stopOrderAlgo.setStopType("");
+        stopOrderAlgo.setAlgoId("3425157900786900992");
+        stopOrderAlgo.setInstId("ETH-USDT-SWAP");
+        stopOrderAlgo.setAlgoOrdType(AlgOrdTypeEnum.CONTRACT_GRID.v());
+        stopOrderAlgo.setStopType("1");
 
         JSONObject result = this.gridTradingAPIService.stopOrderAlgo(stopOrderAlgo);
         toResultString(LOG, "result", result);
@@ -97,7 +103,7 @@ public class GridTradingAPITests extends GridTradingAPIBaseTests {
      */
     @Test
     public void getGridAlgoOrderList(){
-        JSONObject result = this.gridTradingAPIService.getGridAlgoOrderList("","","","","","","");
+        JSONObject result = this.gridTradingAPIService.getGridAlgoOrderList(AlgOrdTypeEnum.CONTRACT_GRID.v(),"3425157900786900992","","","","","");
         toResultString(LOG, "result", result);
     }
 
