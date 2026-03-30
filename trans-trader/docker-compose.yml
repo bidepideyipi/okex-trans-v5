@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  trans-trader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: trans-trader:1.0.0-SNAPSHOT
+    container_name: trans-trader
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Shanghai
+      - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_OPTS=-Xms512m -Xmx1024m -XX:+UseG1GC
+      - SPRING_DATA_MONGODB_HOST=host.docker.internal
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=technical_analysis
+      - SPRING_REDIS_HOST=host.docker.internal
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_DATABASE=0
+    volumes:
+      - ./logs:/opt/app/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - trans-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+networks:
+  trans-network:
+    driver: bridge

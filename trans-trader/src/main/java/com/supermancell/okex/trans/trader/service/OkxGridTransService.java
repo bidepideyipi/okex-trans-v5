@@ -114,7 +114,16 @@ public class OkxGridTransService {
                         String slPx = tickerView.getLast().multiply(new BigDecimal("0.964")).toString();
                         String tpPx = tickerView.getLast().multiply(new BigDecimal("1.036")).toString();
                         JSONObject res = okxGridOrderService.amdOrder(order.getAlgoId(), order.getInstId(), slPx,  tpPx);
-                        logger.info("信号持续，续期：{} - {}, {} ", slPx, tpPx, res);
+                        logger.info("强信号持续，续期：{} - {}, {} ", slPx, tpPx, res);
+                    }
+
+                    if(("long".equals(order.getDirection()) && p == 4 && probability.compareTo(keepBelieveLine) > 0)  ||
+                            ("short".equals(order.getDirection()) && p ==21  && probability.compareTo(keepBelieveLine) > 0)  ){
+                        TickerView tickerView = okxGridOrderService.getTicker(order.getInstId());
+                        String slPx = tickerView.getLast().multiply(new BigDecimal("0.988")).toString();
+                        String tpPx = tickerView.getLast().multiply(new BigDecimal("1.012")).toString();
+                        JSONObject res = okxGridOrderService.amdOrder(order.getAlgoId(), order.getInstId(), slPx,  tpPx);
+                        logger.info("弱信号持续，续期：{} - {}, {} ", slPx, tpPx, res);
                     }
                 }
             }

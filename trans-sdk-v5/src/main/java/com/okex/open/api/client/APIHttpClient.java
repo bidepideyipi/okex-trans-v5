@@ -2,6 +2,7 @@ package com.okex.open.api.client;
 
 import com.okex.open.api.config.APIConfiguration;
 import com.okex.open.api.constant.APIConstants;
+import com.okex.open.api.constant.TrustAllCerts;
 import com.okex.open.api.enums.ContentTypeEnum;
 import com.okex.open.api.enums.HttpHeadersEnum;
 import com.okex.open.api.exception.APIException;
@@ -13,10 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 public class APIHttpClient {
@@ -57,13 +63,21 @@ public class APIHttpClient {
         clientBuilder.readTimeout(this.config.getReadTimeout(), TimeUnit.SECONDS);
         clientBuilder.writeTimeout(this.config.getWriteTimeout(), TimeUnit.SECONDS);
         clientBuilder.retryOnConnectionFailure(this.config.isRetryOnConnectionFailure());
+        
+        try {
+            final TrustManager[] trustAllCerts = new TrustManager[]{new TrustAllCerts()};
+            final SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            clientBuilder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+            clientBuilder.hostnameVerifier((hostname, session) -> true);
+        } catch (NoSuchAlgorithmException | java.security.KeyManagementException e) {
+            LOG.warn("Failed to configure SSL, using default settings", e);
+        }
+        
         clientBuilder.addInterceptor((Interceptor.Chain chain) -> {
             final Request.Builder requestBuilder = chain.request().newBuilder();
             final String timestamp = DateUtils.getUnixTime();
-            //打印首行时间戳
-//            System.out.println("时间戳timestamp={" + timestamp + "}");
-//              设置模拟盘请求头
-//            String simulated = "1";
             requestBuilder.headers(this.headers(chain.request(), timestamp));
             final Request request = requestBuilder.build();
             if (this.config.isPrint()) {
